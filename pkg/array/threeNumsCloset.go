@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"math"
 )
 
 /**
@@ -32,8 +33,11 @@ func threeSumCloset(nums []int, target int) int {
 
 	//排序
 	nums = sort1(nums)
-	var sum int
+	best := 1e7
 	for i := 0; i < len(nums); i++ {
+		if i > 0 && nums[i] == nums[i-1] {
+			continue
+		}
 		if len(nums) == 3 {
 			return nums[0] + nums[1] + nums[2]
 		}
@@ -42,14 +46,37 @@ func threeSumCloset(nums []int, target int) int {
 
 		for {
 			if L < R {
-				newSum := nums[i] + nums[L] + nums[R]
-
-				if (newSum - target) < (sum - target) {
-					sum = newSum
+				value := nums[i] + nums[L] + nums[R]
+				if value == target {
+					return value
 				}
 
-				L++
-				R--
+				if math.Abs(float64(value-target)) < math.Abs(best-float64(target)) {
+					best = float64(value)
+				}
+
+				if value > target {
+
+					for {
+						R--
+						if R > 0 && L < R && nums[R] == nums[R+1] {
+							continue
+						} else {
+							break
+						}
+					}
+				} else {
+
+					for {
+						L++
+						if L > 0 && L < R && nums[L] == nums[L-1] {
+							continue
+						} else {
+							break
+						}
+					}
+
+				}
 
 			} else {
 				break
@@ -58,7 +85,7 @@ func threeSumCloset(nums []int, target int) int {
 		}
 	}
 
-	return sum
+	return int(best)
 }
 func sort1(nums []int) []int {
 	for i := 1; i < len(nums); i++ {
