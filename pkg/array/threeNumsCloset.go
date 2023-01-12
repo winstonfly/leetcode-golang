@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"leetcode-golang/pkg/sort"
 	"math"
 )
 
@@ -32,7 +33,7 @@ import (
 func threeSumCloset(nums []int, target int) int {
 
 	//排序
-	nums = sort1(nums)
+	nums = sort.Sort(nums)
 	best := 1e7
 	for i := 0; i < len(nums); i++ {
 		if i > 0 && nums[i] == nums[i-1] {
@@ -86,21 +87,6 @@ func threeSumCloset(nums []int, target int) int {
 	}
 
 	return int(best)
-}
-func sort1(nums []int) []int {
-	for i := 1; i < len(nums); i++ {
-		value := nums[i]
-		j := i - 1
-		for ; j >= 0; j-- {
-			if nums[j] > value {
-				nums[j+1] = nums[j]
-			} else {
-				break
-			}
-		}
-		nums[j+1] = value
-	}
-	return nums
 }
 
 func main() {
