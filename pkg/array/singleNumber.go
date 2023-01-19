@@ -38,6 +38,23 @@ func singleNumberByXOR(nums []int) int {
 	return result
 }
 
+//No.137
+func singleNumber3(nums []int) int {
+	var value int
+	m := make(map[int]int)
+	for i := 0; i < len(nums); i++ {
+		m[nums[i]] = m[nums[i]] + 1
+	}
+	for k, v := range m {
+		if v == 1 {
+			value = k
+			break
+		}
+	}
+
+	return value
+}
+
 func main() {
-	fmt.Println(singleNumberByXOR([]int{2, 2, 1}))
+	fmt.Println(singleNumber3([]int{2, 2, 3, 2}))
 }
