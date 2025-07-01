@@ -24,21 +24,3 @@ func InsertSort(a []int) []int {
 
 	return a
 }
-
-// BubbleSort 冒泡排序
-func BubbleSort(a []int, n int) []int {
-	if n <= 1 {
-		return a
-	}
-
-	for i := 0; i < n; i++ {
-		for j := 0; j < n-i-1; j++ {
-			if a[i] > a[j] {
-				tmp := a[j]
-				a[j] = a[i]
-				a[i] = tmp
-			}
-		}
-	}
-	return a
-}
