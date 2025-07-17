@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"leetcode-golang/pkg/sort"
+	"slices"
 )
 
 /**
@@ -48,60 +48,88 @@ nums[0] + nums[3] + nums[4] = (-1) + 2 + (-1) = 0 。
 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
 */
 //使用双指针解决
-func threeSum(nums []int) [][]int {
+//func threeSum(nums []int) [][]int {
+//
+//	var result [][]int
+//	nums = sort.Sort(nums)
+//
+//	for i := 0; i < len(nums); i++ {
+//		if nums[i] > 0 {
+//			break
+//		}
+//
+//		if i > 0 && (nums[i] == nums[i-1]) {
+//			continue
+//		}
+//
+//		L := i + 1
+//		R := len(nums) - 1
+//
+//		for {
+//			if L < R {
+//				sum := nums[i] + nums[L] + nums[R]
+//				if sum == 0 {
+//					result = append(result, []int{nums[i], nums[L], nums[R]})
+//
+//					for {
+//						if L < R && nums[L] == nums[L+1] {
+//							L++
+//							continue
+//						}
+//						break
+//					}
+//
+//					for {
+//						if L < R && nums[R] == nums[R-1] {
+//							R--
+//							continue
+//						}
+//						break
+//					}
+//
+//					L++
+//					R--
+//				}
+//
+//				if sum < 0 {
+//					L++
+//				}
+//
+//				if sum > 0 {
+//					R--
+//				}
+//			} else {
+//				break
+//			}
+//
+//		}
+//	}
+//
+//	return result
+//}
 
+func threeSum1(nums []int) [][]int {
+	n := len(nums)
 	var result [][]int
-	nums = sort.Sort(nums)
-
-	for i := 0; i < len(nums); i++ {
-		if nums[i] > 0 {
-			break
-		}
-
-		if i > 0 && (nums[i] == nums[i-1]) {
-			continue
-		}
-
-		L := i + 1
-		R := len(nums) - 1
-
-		for {
-			if L < R {
-				sum := nums[i] + nums[L] + nums[R]
-				if sum == 0 {
-					result = append(result, []int{nums[i], nums[L], nums[R]})
-
-					for {
-						if L < R && nums[L] == nums[L+1] {
-							L++
-							continue
-						}
-						break
-					}
-
-					for {
-						if L < R && nums[R] == nums[R-1] {
-							R--
-							continue
-						}
-						break
-					}
-
-					L++
-					R--
+	slices.Sort(nums)
+	m := make(map[string]bool)
+	for i := 0; i < n; i++ {
+		target := -nums[i]
+		left, right := i+1, n-1
+		for left < right {
+			if nums[left]+nums[right] == target {
+				s := fmt.Sprintf("%s%s%s", nums[i], nums[left], nums[right])
+				if _, ok := m[s]; !ok {
+					result = append(result, []int{nums[i], nums[left], nums[right]})
+					m[s] = true
 				}
-
-				if sum < 0 {
-					L++
-				}
-
-				if sum > 0 {
-					R--
-				}
-			} else {
-				break
+				left++
 			}
-
+			if nums[left]+nums[right] > target {
+				right--
+			} else {
+				left++
+			}
 		}
 	}
 
@@ -109,8 +137,8 @@ func threeSum(nums []int) [][]int {
 }
 
 func main() {
-	nums := []int{-2, 0, 3, -1, 4, 0, 3, 4, 1, 1, 1, -3, -5, 4, 0}
-	result := threeSum(nums)
+	nums := []int{-1, 0, 1, 2, -1, -4}
+	result := threeSum1(nums)
 	fmt.Println(result)
 
 }
