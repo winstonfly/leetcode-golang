@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"slices"
 )
 
 func main() {
@@ -43,35 +44,40 @@ func combinationSum(candidates []int, target int) [][]int {
 // 给定一个候选人编号的集合 candidates 和一个目标数 target ，找出 candidates 中所有可以使数字和为 target 的组合。
 // candidates 中的每个数字在每个组合中只能使用 一次 。
 func combinationSum2(candidates []int, target int) [][]int {
-
-	var (
-		result [][]int
-	)
-	var backtrack func(tokens []int, path []int, target int)
-	backtrack = func(tokens []int, path []int, target int) {
-		if target == 0 {
-			result = append(result, append([]int(nil), path...))
+	slices.Sort(candidates)
+	var result [][]int
+	//回溯解法
+	var backtrack func(arr []int, sum, index int)
+	backtrack = func(arr []int, sum, index int) {
+		//找到终止条件
+		if sum == target {
+			result = append(result, append([]int{}, arr...)) // 这里使用append([]int{}, arr...)是为了创建一个新的切片，避免后续修改影响到结果
 			return
 		}
 
-		if len(tokens) == 0 || target < 0 {
+		if sum > target || index >= len(candidates) {
 			return
 		}
 
-		for i := 0; i < len(tokens); i++ {
-			if tokens[i] > target {
-				i++
+		if len(candidates) == 0 {
+			return
+		}
+
+		for i := index; i < len(candidates); i++ {
+			if i > index && candidates[i] == candidates[i-1] {
+				//跳过重复的元素
 				continue
 			}
-
-			if i < len(tokens) {
-				path = append(path, tokens[i])
-				backtrack(tokens[i:], path, target-tokens[i])
-				path = path[:len(path)-1]
-			}
+			arr = append(arr, candidates[i])
+			sum += candidates[i]
+			backtrack(arr, sum, i+1)
+			//回溯
+			arr = arr[:len(arr)-1]
+			sum -= candidates[i]
 		}
+
 	}
 
-	backtrack(candidates, []int{}, target)
+	backtrack([]int{}, 0, 0)
 	return result
 }

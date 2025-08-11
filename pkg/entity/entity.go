@@ -1,4 +1,4 @@
-package main
+package entity
 
 type ListNode struct {
 	Val  int
@@ -7,7 +7,7 @@ type ListNode struct {
 
 // 题号2：两数相加
 
-func buildListNode(nums []int) *ListNode {
+func BuildListNode(nums []int) *ListNode {
 	if len(nums) == 0 {
 		return nil
 	}
@@ -21,12 +21,4 @@ func buildListNode(nums []int) *ListNode {
 	}
 
 	return head
-}
-
-func main() {
-	addTwoNumbers(buildListNode([]int{9, 9, 9, 9, 9, 9, 9}), buildListNode([]int{9, 9, 9, 9}))
-}
-
-func addTwoNumbers(l1 *ListNode, l2 *ListNode) *ListNode {
-	return nil
 }
