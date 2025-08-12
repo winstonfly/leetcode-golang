@@ -1,43 +1,54 @@
 package list
 
 func sortList(head *ListNode) *ListNode {
-	slow, fast := head, head
-	for fast != nil && fast.Next != nil {
-		slow = slow.Next
-		fast = fast.Next.Next
+	var tmp []int
+	for head != nil {
+		tmp = append(tmp, head.Val)
+		head = head.Next
 	}
 
-	//slow是中间节点
-	//left := head, right := slow.Next
-
-	return nil
-}
-
-func mergeSqeuence(left, right *ListNode) *ListNode {
+	result := sortArray(tmp)
 	dummy := &ListNode{}
-	current := dummy
-
-	for {
-		if left == nil {
-			current.Next = right
-			return dummy.Next
-		}
-
-		if right == nil {
-			current.Next = left
-			return dummy.Next
-		}
-
-		if left.Val < right.Val {
-			current.Next = left
-			left = left.Next
-		} else {
-			current.Next = right
-			right = right.Next
-		}
-
-		current = current.Next
+	pre := dummy
+	for _, v := range result {
+		current := &ListNode{Val: v}
+		pre.Next = current
+		pre = current
 	}
 
 	return dummy.Next
+}
+
+func sortArray(nums []int) []int {
+	if len(nums) <= 1 {
+		return nums
+	}
+
+	left := sortArray(nums[0 : len(nums)/2])
+	right := sortArray(nums[len(nums)/2:])
+	return merge(left, right)
+}
+
+func merge(left, right []int) []int {
+	result := make([]int, 0, len(left)+len(right))
+	i, j := 0, 0
+	for i < len(left) && j < len(right) {
+		if left[i] <= right[j] {
+			result = append(result, left[i])
+			i++
+		} else {
+			result = append(result, right[j])
+			j++
+		}
+	}
+
+	if i < len(left) {
+		result = append(result, left[i:]...)
+	}
+
+	if j < len(right) {
+		result = append(result, right[j:]...)
+	}
+
+	return result
 }
