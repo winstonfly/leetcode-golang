@@ -42,4 +42,15 @@ func TestExists(t *testing.T) {
 		}
 	})
 
+	t.Run("test4", func(t *testing.T) {
+		board := [][]byte{
+			{'a'},
+		}
+		word := "a"
+		result := exist(board, word)
+		if result != true {
+			t.Errorf("exists(%q, %q) = %t; want %t", board, word, result, true)
+		}
+	})
+
 }

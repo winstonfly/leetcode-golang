@@ -14,6 +14,10 @@ func exist(board [][]byte, word string) bool {
 
 	var dfs func(board [][]byte, word string, i, j int)
 	dfs = func(board [][]byte, word string, i, j int) {
+		if len(word) == 0 {
+			ans = ans + 1
+			return
+		}
 		m := len(board)
 		n := len(board[0])
 		if i >= m || i < 0 || j >= n || j < 0 {
@@ -21,10 +25,6 @@ func exist(board [][]byte, word string) bool {
 		}
 		if dp[i][j] {
 			//已经使用过
-			return
-		}
-		if len(word) == 0 {
-			ans = ans + 1
 			return
 		}
 
