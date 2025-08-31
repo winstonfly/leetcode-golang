@@ -36,6 +36,7 @@ func (h *pairHeap) Pop() interface{} {
 	return x
 }
 
+// NO.347
 func topKFrequent(nums []int, k int) []int {
 	m := make(map[int]Pair, 1)
 	for i := 0; i < len(nums); i++ {

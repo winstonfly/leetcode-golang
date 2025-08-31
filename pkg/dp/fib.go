@@ -1,4 +1,4 @@
-package main
+package dp
 
 import "fmt"
 
@@ -26,9 +26,4 @@ func fib(n int) int {
 
 	fmt.Println(dp)
 	return curr
-}
-
-func main() {
-	result := fib(20)
-	fmt.Println(result)
 }
