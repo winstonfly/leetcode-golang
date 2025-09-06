@@ -2,6 +2,7 @@ package list
 
 type ListNode struct {
 	Val  int
+	Key  int
 	Next *ListNode
 }
 
