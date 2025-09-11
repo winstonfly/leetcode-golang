@@ -18,4 +18,20 @@ func TestCanPartition(t *testing.T) {
 			t.Errorf("expected true, got false")
 		}
 	})
+
+	t.Run("test3", func(t *testing.T) {
+		nums := []int{1, 5, 11, 5}
+		v := canPartition(nums)
+		if !v {
+			t.Errorf("expected true, got false")
+		}
+	})
+
+	t.Run("test4", func(t *testing.T) {
+		nums := []int{1, 2, 5}
+		v := canPartition(nums)
+		if v {
+			t.Errorf("expected false, got true")
+		}
+	})
 }
