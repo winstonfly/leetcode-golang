@@ -5,14 +5,14 @@ import (
 )
 
 func main() {
-	result := reverse(1534236469)
+	result := (1534236469)
 
 	a := 1<<31 - 1
 	fmt.Println(a)
 	println(result)
 }
 
-func reverse(x int) int {
+func (x int) int {
 
 	var arr []int
 	flag := false
