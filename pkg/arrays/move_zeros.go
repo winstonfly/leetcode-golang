@@ -1,16 +1,29 @@
 package arrays
 
-func moveZeroes(nums []int) {
-	var result []int
-	var zeros []int
-
-	for _, v := range nums {
-		if v != 0 {
-			result = append(result, v)
-		} else {
-			zeros = append(zeros, v)
+// NO.283
+// 常规则两层循环解法
+func moveZeroes1(nums []int) {
+	for i := 0; i < len(nums); i++ {
+		if nums[i] == 0 {
+			for j := i + 1; j < len(nums); j++ {
+				if nums[j] != 0 {
+					nums[i], nums[j] = nums[j], nums[i]
+					break
+				}
+			}
 		}
 	}
-	result = append(result, zeros...)
-	copy(nums, result)
+}
+
+func moveZeroes(nums []int) {
+	left, right := 0, 1
+
+	for right < len(nums) {
+		if nums[right] != 0 {
+			nums[left], nums[right] = nums[right], nums[left]
+			left++
+		}
+
+		right++
+	}
 }
