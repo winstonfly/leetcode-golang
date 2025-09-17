@@ -8,6 +8,7 @@
 左指针从前向后遍历，右指针从后向前， nums[left] + nums[right] > target， 则需要将right向左移， 反之将left 向右移。
 
 ````go
+func threeSum(nums []int) [][]int {
 var ans [][]int
 n := len(nums)
 sort.Ints(nums)
@@ -39,5 +40,7 @@ ans = append(ans, []int{nums[i], nums[left], nums[right]})
 }
 
 return ans
+}
+
 
 ````

@@ -5,36 +5,33 @@ import (
 	"sort"
 )
 
-func maxSlidingWindow1(nums []int, k int) []int {
+// NO.239
+func maxSlidingWindow(nums []int, k int) []int {
+
 	var ans []int
-	left, right := 1, k
-	var maxx, maxxIndex int
+
+	q := []int{}
+	push := func(i int) {
+		for len(q) > 0 && nums[i] >= nums[q[len(q)-1]] {
+			q = q[:len(q)-1]
+		}
+		q = append(q, iß)
+	}
+
 	for i := 0; i < k; i++ {
-		if nums[i] > maxx {
-			maxx = nums[i]
-			maxxIndex = i
-		}
+		push(i)
 	}
 
-	ans = append(ans, maxx)
-	for left <= len(nums)-k && right < len(nums) {
-		if left < maxxIndex {
-			maxx = max(maxx, nums[right])
+	ans = append(ans, nums[q[0]])
 
-		} else {
-			maxx = nums[left]
-			for i := left; i <= right; i++ {
-				if nums[i] > maxx {
-					maxx = max(maxx, nums[i])
-					maxxIndex = i
-				}
-			}
+	for i := k; i < len(nums); i++ {
+		push(i)
+		if q[0] <= i-k {
+			q = q[1:]
 		}
-		ans = append(ans, maxx)
-		left++
-		right++
-	}
 
+		ans = append(ans, nums[q[0]])
+	}
 	return ans
 }
 
@@ -57,7 +54,7 @@ func (h *hp) Pop() any {
 	return v
 }
 
-func maxSlidingWindow(nums []int, k int) []int {
+func maxSlidingWindow1(nums []int, k int) []int {
 	var ans []int
 	h := &hp{make([]int, k)}
 	a = nums
