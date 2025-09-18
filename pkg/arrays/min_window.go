@@ -1,45 +1,53 @@
 package arrays
 
-import "math"
-
 // NO.76
 func minWindow(s string, t string) string {
-	ms, mt := make(map[byte]int, 1), make(map[byte]int, 1)
-	for i := 0; i < len(t); i++ {
+	tLen := len(t)
+	sLen := len(s)
+
+	if sLen < tLen {
+		return ""
+	}
+
+	ms, mt := make(map[byte]int), make(map[byte]int)
+	for i := 0; i < tLen; i++ {
 		mt[t[i]]++
 	}
 
-	sLen := math.MaxInt32
-	ansL, ansR := -1, -1
-	check := func() bool {
+	//如果小于，继续向右移动
+	check := func(ms, mt map[byte]int) bool {
 		for k, v := range mt {
-			for ms[k] < v {
+			if ms[k] < v {
 				return false
 			}
 		}
 		return true
 	}
 
-	for l, r := 0, 0; r < len(s); r++ {
-		if r < len(s) && ms[s[r]] > 0 {
-			ms[s[r]]++
-		}
-
-		for check() && l <= r {
-			if r-l+1 < sLen {
-				sLen = r - l + 1
-				ansL, ansR = l, r
+	ansL, ansR := 0, 0
+	var ans string
+	for ansR < sLen {
+		ms[s[ansR]]++
+		for ansR-ansL+1 >= tLen && check(ms, mt) {
+			tmp := s[ansL : ansR+1]
+			if ans == "" {
+				ans = tmp
+			} else {
+				//更新答案
+				if len(ans) > len(tmp) {
+					ans = tmp
+				}
 			}
-
-			if ms[s[l]] > 0 {
-				ms[s[l]]--
-			}
-			l++
+			//收缩左边界
+			ms[s[ansL]]--
+			ansL++
 		}
+		ansR++
 	}
 
-	if ansL == -1 {
+	if ansL == 0 && ansR == sLen {
 		return ""
 	}
-	return s[ansL : ansR+1]
+
+	return ans
 }
