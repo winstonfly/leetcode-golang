@@ -11,6 +11,7 @@ import (
  *     Next *ListNode
  * }
  */
+// NO.234
 func isPalindromeList(head *entity.ListNode) bool {
 	a := []int{}
 	for head != nil {

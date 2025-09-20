@@ -1,6 +1,6 @@
 package list
 
-func addTwoNumbers(l1 *ListNode, l2 *ListNode) *ListNode {
+func addTwoNumbers1(l1 *ListNode, l2 *ListNode) *ListNode {
 
 	dummy := &ListNode{}
 	current := dummy
@@ -50,6 +50,53 @@ func addTwoNumbers(l1 *ListNode, l2 *ListNode) *ListNode {
 	}
 	if carry == 1 {
 		current.Next = &ListNode{Val: 1}
+	}
+
+	return dummy.Next
+}
+
+func addTwoNumbers(l1, l2 *ListNode) *ListNode {
+	var result []int
+
+	for l1 != nil && l2 != nil {
+		result = append(result, l1.Val+l2.Val)
+		l1 = l1.Next
+		l2 = l2.Next
+	}
+
+	for l1 != nil {
+		result = append(result, l1.Val)
+		l1 = l1.Next
+	}
+
+	for l2 != nil {
+		result = append(result, l2.Val)
+		l2 = l2.Next
+	}
+
+	dummy := &ListNode{}
+	current := dummy
+	carry := 0
+	for i, v := range result {
+		if carry != 0 {
+			v += carry
+		}
+		if v >= 10 {
+			carry = v / 10
+			current.Next = &ListNode{Val: v - 10}
+		} else {
+			carry = 0
+			current.Next = &ListNode{Val: v}
+		}
+
+		if i == len(result)-1 {
+			if carry != 0 {
+				current.Next.Next = &ListNode{Val: carry}
+			}
+		}
+
+		current = current.Next
+
 	}
 
 	return dummy.Next

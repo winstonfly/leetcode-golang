@@ -7,7 +7,7 @@ package list
  *     Next *ListNode
  * }
  */
-func swapPairs(head *ListNode) *ListNode {
+func swapPairs1(head *ListNode) *ListNode {
 	dummy := &ListNode{Next: head}
 	prev := dummy
 	current := dummy.Next
@@ -26,4 +26,17 @@ func swapPairs(head *ListNode) *ListNode {
 	}
 
 	return dummy.Next
+}
+
+// 递归解法
+func swapPairs(head *ListNode) *ListNode {
+	if head == nil || head.Next == nil {
+		return head
+	}
+
+	newHead := head.Next
+	head.Next = swapPairs(newHead.Next)
+	newHead.Next = head
+
+	return newHead
 }

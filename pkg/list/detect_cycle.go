@@ -1,37 +1,37 @@
 package list
 
+// NO.142
 func detectCycle(head *ListNode) *ListNode {
-	if head == nil || head.Next == nil {
-		return nil
-	}
 
-	if head.Next == head {
-		return head
-	}
-
-	slow := head
-	fast := head.Next
-	index := 0
-	for slow != fast {
-		if fast == nil || fast.Next == nil {
-			return nil
+	m := make(map[*ListNode]bool, 1)
+	for head != nil {
+		if m[head] {
+			return head
 		}
 
-		if slow == slow.Next {
-			return slow
-		}
+		m[head] = true
+		head = head.Next
+	}
+
+	return nil
+}
+
+func detectCycle2(head *ListNode) *ListNode {
+	slow, fast := head, head
+
+	for fast != nil && fast.Next != nil {
 		slow = slow.Next
 		fast = fast.Next.Next
-		index++
+
+		if slow == fast {
+			p := head
+			for p != slow {
+				p = p.Next
+				slow = slow.Next
+			}
+			return p
+		}
 	}
 
-	i := 1
-	dummy := &ListNode{Next: head}
-	current := dummy
-	for current.Next != nil && i < index {
-		current = current.Next
-		i++
-	}
-
-	return current
+	return slow
 }

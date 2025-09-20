@@ -2,7 +2,7 @@ package list
 
 import "leetcode-golang/pkg/entity"
 
-func removeNthFromEnd(head *entity.ListNode, n int) *entity.ListNode {
+func removeNthFromEnd1(head *entity.ListNode, n int) *entity.ListNode {
 	l := 0
 	current := head
 	for {
@@ -29,5 +29,27 @@ func removeNthFromEnd(head *entity.ListNode, n int) *entity.ListNode {
 	//删除
 	prev.Next = current.Next
 
+	return dummy.Next
+}
+
+func removeNthFromEnd(head *ListNode, n int) *ListNode {
+	var resource []*ListNode
+	for head != nil {
+		tmp := head.Next
+		head.Next = nil
+		resource = append(resource, head)
+		head = tmp
+	}
+
+	dummy := &ListNode{}
+	current := dummy
+	for i := 0; i < len(resource); i++ {
+		if i == len(resource)-n {
+			continue
+		}
+
+		current.Next = resource[i]
+		current = current.Next
+	}
 	return dummy.Next
 }
