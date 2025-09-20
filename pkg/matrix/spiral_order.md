@@ -1,6 +1,15 @@
-package matrix
+### 螺旋矩阵
 
-// NO.54 1行，i列，i行，1列
+### 题目
+![螺旋矩阵](../../images/spiral_order.png)
+
+### 思考 
+1. 题目要求我们按顺时针螺旋顺序返回矩阵中的所有元素, 我们可以通过维护四个边界来实现这一点: 上边界 (top), 下边界 (bottom), 左边界 (left), 右边界 (right).
+2. 初始时, 上边界为 0, 下边界为矩阵的最后一行索引, 左边界为 0, 右边界为矩阵的最后一列索引.
+3. 设计一个count数，通过count + 1对方向取模来控制下一个方向，方向依次为右、下、左、上， 当遇到边界或者已经访问过的元素时，改变方向。
+
+### 代码实现
+```go
 func spiralOrder(matrix [][]int) []int {
 	var ans []int
 	visited := make([][]bool, len(matrix))
@@ -36,3 +45,4 @@ func spiralOrder(matrix [][]int) []int {
 	}
 	return ans
 }
+```

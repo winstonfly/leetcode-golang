@@ -12,7 +12,9 @@ func TestSearchMatrix(t *testing.T) {
 
 		target := 8
 		result := searchMatrix(matrix, target)
-		t.Log(result)
+		if !result {
+			t.Errorf("searchMatrix() = %v; want %v", result, true)
+		}
 	})
 
 	t.Run("test2", func(t *testing.T) {
@@ -22,7 +24,9 @@ func TestSearchMatrix(t *testing.T) {
 
 		target := 5
 		result := searchMatrix(matrix, target)
-		t.Log(result)
+		if !result {
+			t.Errorf("searchMatrix() = %v; want %v", result, true)
+		}
 	})
 
 	t.Run("test3", func(t *testing.T) {
@@ -32,6 +36,20 @@ func TestSearchMatrix(t *testing.T) {
 
 		target := -5
 		result := searchMatrix(matrix, target)
-		t.Log(result)
+		if !result {
+			t.Errorf("searchMatrix() = %v; want %v", result, true)
+		}
+	})
+
+	t.Run("test4", func(t *testing.T) {
+		matrix := [][]int{
+			{1, 1},
+		}
+
+		target := -0
+		result := searchMatrix(matrix, target)
+		if result {
+			t.Errorf("searchMatrix() = %v; want %v", result, true)
+		}
 	})
 }
