@@ -1,7 +1,7 @@
 package list
 
 // NO.25
-func reverseKGroup(head *ListNode, k int) *ListNode {
+func reverseKGroup1(head *ListNode, k int) *ListNode {
 	dumm := &ListNode{Next: head}
 	current := dumm.Next
 	prev := dumm
@@ -32,6 +32,40 @@ func reverseKGroup(head *ListNode, k int) *ListNode {
 	}
 
 	return dumm.Next
+}
+
+func reverseKGroup(head *ListNode, k int) *ListNode {
+	var nodes []*ListNode
+	current := head
+	for current != nil {
+		nodes = append(nodes, current)
+		current = current.Next
+	}
+
+	if len(nodes) < k {
+		return head
+	}
+
+	dummy := &ListNode{}
+	curr := dummy
+	n := len(nodes) / k
+	for i := 0; i <= len(nodes)/k-1; i++ {
+		start := i * k
+		end := (i+1)*k - 1
+
+		for j := end; j >= start; j-- {
+			nodes[j].Next = nil
+			curr.Next = nodes[j]
+			curr = curr.Next
+		}
+	}
+
+	for i := n * k; i < len(nodes); i++ {
+		curr.Next = nodes[i]
+		curr = curr.Next
+	}
+
+	return dummy.Next
 }
 
 func rotate(head *ListNode) (*ListNode, *ListNode) {

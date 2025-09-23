@@ -1,18 +1,23 @@
 package tree
 
+// NO.101
 func isSymmetric(root *TreeNode) bool {
-	var check func(p, q *TreeNode) bool
-	check = func(p, q *TreeNode) bool {
-		if p == nil && q == nil {
+	if root == nil {
+		return true
+	}
+
+	var check func(left, right *TreeNode) bool
+	check = func(left, right *TreeNode) bool {
+		if left == nil && right == nil {
 			return true
 		}
 
-		if p == nil || q == nil {
+		if left == nil || right == nil || left.Val != right.Val {
 			return false
 		}
 
-		return p.Val == q.Val && check(p.Left, q.Right) && check(p.Right, q.Left)
+		return check(left.Left, right.Right) && check(left.Right, right.Left)
 	}
 
-	return check(root, root)
+	return check(root.Left, root.Right)
 }

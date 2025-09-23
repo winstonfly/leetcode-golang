@@ -7,7 +7,9 @@ func TestDiameterOfBinaryTree(t *testing.T) {
 		tests := []int{1, 2, 3, 4, 5}
 		root := BuildTreeNode(tests)
 		v := diameterOfBinaryTree(root)
-		t.Log(v)
+		if v != 3 {
+			t.Fatalf("expect 4 get %d", v)
+		}
 	})
 
 	t.Run("test2", func(t *testing.T) {

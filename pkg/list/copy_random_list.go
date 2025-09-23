@@ -2,32 +2,30 @@ package list
 
 type Node struct {
 	Val    int
-	Node   *Node
+	Next   *Node
 	Random *Node
 }
 
-var cachedNodes map[*Node]*Node
+var cacheNodes map[*Node]*Node
 
 // NO.138
 func copyRandomList(head *Node) *Node {
-	cachedNodes = make(map[*Node]*Node, 1)
+	cacheNodes = make(map[*Node]*Node)
 	return deepCopy(head)
 }
 
+// NO.138
 func deepCopy(node *Node) *Node {
 	if node == nil {
 		return nil
 	}
-
-	if n, ok := cachedNodes[node]; ok {
-		return n
+	if newNode, ok := cacheNodes[node]; ok {
+		return newNode
 	}
-
-	newNode := &Node{}
-	newNode.Val = node.Val
-	newNode.Node = deepCopy(node.Node)
+	newNode := &Node{Val: node.Val}
+	cacheNodes[node] = newNode
+	//在回溯的过程中，构建 next 和 random 指针
+	newNode.Next = deepCopy(node.Next)
 	newNode.Random = deepCopy(node.Random)
-
-	cachedNodes[newNode] = newNode
 	return newNode
 }

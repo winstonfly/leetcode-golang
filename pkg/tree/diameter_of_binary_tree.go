@@ -1,41 +1,47 @@
 package tree
 
 // NO.543
-// 左右子树同高时最长，p, q一个遍历左子树，一个右子树
 func diameterOfBinaryTree(root *TreeNode) int {
 
-	maxLen := 0
-	var depthFn func(node *TreeNode) int
-	depthFn = func(node *TreeNode) int {
+	if root == nil {
+		return 0
+	}
+
+	var ans int
+	m := make(map[*TreeNode]int)
+	var depth func(node *TreeNode) int
+	depth = func(node *TreeNode) int {
 		if node == nil {
 			return 0
 		}
 
-		return max(depthFn(node.Left), depthFn(node.Right)) + 1
+		if v, ok := m[node]; ok {
+			return v
+		}
+
+		leftDepth := depth(node.Left)
+		rightDepth := depth(node.Right)
+		m[node] = max(leftDepth, rightDepth) + 1
+		return max(leftDepth, rightDepth) + 1
 	}
 
-	var compute func(node *TreeNode)
 	var queue []*TreeNode
 	queue = append(queue, root)
-	compute = func(node *TreeNode) {
-		if node == nil {
-			return
+	for len(queue) > 0 {
+		q := queue[0]
+		queue = queue[1:]
+		if q.Left != nil {
+			queue = append(queue, q.Left)
 		}
 
-		for len(queue) > 0 {
-			curr := queue[0]
-			queue = queue[1:]
-			if curr == nil {
-				continue
-			}
-			leftDepth := depthFn(curr.Left)
-			rightDepth := depthFn(curr.Right)
-			maxLen = max(maxLen, leftDepth+rightDepth)
-			queue = append(queue, curr.Left, curr.Right)
+		if q.Right != nil {
+			queue = append(queue, q.Right)
 		}
+
+		leftDepth := depth(q.Left)
+		rightDepth := depth(q.Right)
+		ans = max(ans, leftDepth+rightDepth)
 	}
 
-	compute(root)
-
-	return maxLen
+	return ans
 }

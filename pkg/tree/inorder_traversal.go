@@ -6,6 +6,11 @@ type TreeNode struct {
 	Right *TreeNode
 }
 
+type Pair struct {
+	Node  *TreeNode
+	Color int // 0表示白色，1表示灰色
+}
+
 func BuildTreeNode(arr []int) *TreeNode {
 	if len(arr) == 0 || arr[0] == -1 {
 		return nil
@@ -46,12 +51,10 @@ func inorderTraversal(root *TreeNode) []int {
 	var ans []int
 
 	var inorder func(node *TreeNode)
-
 	inorder = func(node *TreeNode) {
 		if node == nil {
 			return
 		}
-
 		inorder(node.Left)
 		ans = append(ans, node.Val)
 		inorder(node.Right)
@@ -59,6 +62,28 @@ func inorderTraversal(root *TreeNode) []int {
 
 	inorder(root)
 
+	return ans
+}
+
+func inorderTraversal2(root *TreeNode) []int {
+	var stack []Pair
+	var ans []int
+	stack = append(stack, Pair{Node: root, Color: 0})
+	for len(stack) > 0 {
+		p := stack[len(stack)-1]
+		stack = stack[:len(stack)-1]
+		if p.Color == 0 {
+			if p.Node != nil {
+				stack = append(stack, Pair{Node: p.Node.Right, Color: 0})
+				stack = append(stack, Pair{Node: p.Node, Color: 1})
+				stack = append(stack, Pair{Node: p.Node.Left, Color: 0})
+			}
+		} else {
+			if p.Node != nil {
+				ans = append(ans, p.Node.Val)
+			}
+		}
+	}
 	return ans
 }
 
