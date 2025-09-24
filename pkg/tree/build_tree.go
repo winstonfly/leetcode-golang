@@ -6,24 +6,17 @@ func buildTree(preorder []int, inorder []int) *TreeNode {
 		return nil
 	}
 
-	//前序第一个节点是根节点, 中序遍历第一个节点为左子树
-	index := 0
+	root := &TreeNode{Val: preorder[0]}
 
-	for i := 0; i < len(inorder); i++ {
-		if inorder[i] == preorder[0] {
+	var index int
+	for i, v := range inorder {
+		if v == root.Val {
 			index = i
 			break
 		}
 	}
 
-	root := &TreeNode{Val: preorder[0]}
-	if len(inorder[:index]) > 0 {
-		root.Left = buildTree(preorder[1:], inorder[:index])
-	}
-
-	if len(inorder[index+1:]) > 0 {
-		root.Right = buildTree(preorder[index+1:], inorder[index+1:])
-	}
-
+	root.Left = buildTree(preorder[1:index+1], inorder[:index])
+	root.Right = buildTree(preorder[index+1:], inorder[index+1:])
 	return root
 }
