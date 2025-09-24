@@ -2,32 +2,61 @@ package tree
 
 // NO.236
 func lowestCommonAncestor(root, p, q *TreeNode) *TreeNode {
+	var ans *TreeNode
+	var dfs func(node *TreeNode)
+	dfs = func(node *TreeNode) {
+
+		if node == nil {
+			return
+		}
+
+		if pathAncestor(node, p) && pathAncestor(node, q) {
+			ans = node
+		}
+
+		dfs(node.Left)
+		dfs(node.Right)
+	}
+
+	dfs(root)
+	return ans
+}
+
+func pathAncestor(node, target *TreeNode) bool {
+	if node == nil {
+		return false
+	}
+
+	if node == target {
+		return true
+	}
+
+	return pathAncestor(node.Left, target) || pathAncestor(node.Right, target)
+}
+
+func lowestCommonAncestor1(root, p, q *TreeNode) *TreeNode {
 	if root == nil {
 		return nil
 	}
 
-	var ans *TreeNode
-	if pathAncestor(root, p) && pathAncestor(root, q) {
-		ans = root
+	if root == p || root == q {
+		return root
 	}
 
-	if tmp := lowestCommonAncestor(root.Left, p, q); tmp != nil {
-		ans = tmp
-	}
-	if tmp := lowestCommonAncestor(root.Right, p, q); tmp != nil {
-		ans = tmp
-	}
-	return ans
-}
+	left := lowestCommonAncestor1(root.Left, p, q)
+	right := lowestCommonAncestor(root.Right, p, q)
 
-func pathAncestor(root *TreeNode, p *TreeNode) bool {
-	if root == nil {
-		return false
+	if left != nil && right != nil {
+		return root
 	}
 
-	if root == p {
-		return true
+	if left != nil {
+		return left
 	}
 
-	return pathAncestor(root.Left, p) || pathAncestor(root.Right, p)
+	if right != nil {
+		return right
+	}
+
+	return nil
 }
