@@ -3,22 +3,25 @@ package backtrack
 // NO.22
 func generateParenthesis(n int) []string {
 	var ans []string
-	var backtrack func(left, right int, current string)
-	backtrack = func(left, right int, current string) {
-		if left == 0 && right == 0 {
-			ans = append(ans, current)
+
+	var backtrack func(left, right int, curr string)
+	backtrack = func(left, right int, curr string) {
+
+		if left == n && right == n {
+			ans = append(ans, curr)
 			return
 		}
 
-		if left > 0 {
-			backtrack(left-1, right, current+"(")
+		if left < n {
+			backtrack(left+1, right, curr+"(")
 		}
 
-		if right > left {
-			backtrack(left, right-1, current+")")
+		if right < left {
+			backtrack(left, right+1, curr+")")
 		}
-
 	}
-	backtrack(n, n, "")
+
+	backtrack(0, 0, "")
+
 	return ans
 }
