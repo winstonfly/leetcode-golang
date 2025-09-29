@@ -1,67 +1,67 @@
 package backtrack
 
-var solutions [][]string
-
 // NO.51 N皇后问题 经典回溯法解决
 func solveNQueens(n int) [][]string {
-	solutions = [][]string{}
-	queens := make([]int, n)
-	for i := 0; i < n; i++ {
-		queens[i] = -1
+	var ans [][]string
+
+	dp := make([][]bool, n)
+	for i := range dp {
+		dp[i] = make([]bool, n)
 	}
 
-	columns := map[int]bool{}
-	diagonals1, diagonals2 := map[int]bool{}, map[int]bool{}
-	backtrack(queens, n, 0, columns, diagonals1, diagonals2)
+	col := make([]bool, n)
+	diag1 := make([]bool, 2*n-1) //标记左上到右下(i+j)方向的对角线
+	diag2 := make([]bool, 2*n-1) //标记右上到左下(i-j+n-1)方向的对角线
 
-	return solutions
-}
-
-func backtrack(queens []int, n, row int, columns, diagonals1, diagonals2 map[int]bool) {
-
-	if row == n {
-		board := generateBoard(queens, n)
-		solutions = append(solutions, board)
-		return
-	}
-
-	for i := 0; i < len(queens); i++ {
-		if columns[i] {
-			continue
+	var backtrack func(i int)
+	backtrack = func(i int) {
+		if i == n {
+			ans = append(ans, generateBoard(dp))
+			return
 		}
 
-		diagonal1 := row - i
-		if diagonals1[diagonal1] {
-			continue
-		}
-
-		diagonal2 := row + i
-		if diagonals2[diagonal2] {
-			continue
-		}
-
-		queens[row] = i
-		columns[i] = true
-		diagonals1[diagonal1] = true
-		diagonals2[diagonal2] = true
-
-		backtrack(queens, n, row+1, columns, diagonals1, diagonals2)
-		queens[row] = -1
-		delete(columns, i)
-		delete(diagonals1, diagonal1)
-		delete(diagonals2, diagonal2)
-	}
-}
-
-func generateBoard(queens []int, n int) []string {
-	var board []string
-	for i := 0; i < n; i++ {
-		row := make([]byte, n)
 		for j := 0; j < n; j++ {
-			row[j] = '.'
+			if col[j] {
+				continue
+			}
+
+			if diag1[i+j] {
+				continue
+			}
+
+			if diag2[i-j+n-1] {
+				continue
+			}
+
+			dp[i][j] = true
+			col[j] = true
+			diag1[i+j] = true
+			diag2[i-j+n-1] = true
+			backtrack(i + 1)
+			dp[i][j] = false
+			col[j] = false
+			diag1[i+j] = false
+			diag2[i-j+n-1] = false
+		}
+	}
+
+	backtrack(0)
+
+	return ans
+}
+
+func generateBoard(dp [][]bool) []string {
+	var board []string
+	for i := range dp {
+		row := make([]byte, len(dp))
+		for j := range dp[i] {
+			if dp[i][j] {
+				row[j] = 'Q'
+			} else {
+				row[j] = '.'
+			}
 		}
 
-		row[queens[i]] = 'Q'
 		board = append(board, string(row))
 	}
 

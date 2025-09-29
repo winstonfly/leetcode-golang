@@ -2,43 +2,21 @@ package search
 
 // 1,3, 5, 6插入7
 // 1,3
-func searchInsert(tokens []int, target int) int {
-
-	var dfs func(nums []int, target int, start int)
-	var pos int
-	dfs = func(nums []int, target int, start int) {
-		if len(nums) == 0 {
-			return
+// NO.35
+func searchInsert(nums []int, target int) int {
+	left, right := 0, len(nums)-1
+	for left <= right {
+		mid := left + (right-left)/2
+		if nums[mid] == target {
+			return mid
 		}
 
-		if len(nums) == 1 {
-			if nums[0] >= target {
-				if start > 0 {
-					pos = start - 1
-				} else {
-					pos = start
-				}
-				return
-			}
-			pos = start + 1
-			return
-		}
-
-		n := len(nums)
-		middle := n / 2
-
-		if nums[middle] == target {
-			pos = start + middle
-			return
-		}
-
-		if nums[middle] > target {
-			dfs(nums[:middle], target, start)
+		if nums[mid] < target {
+			left = mid + 1
 		} else {
-			dfs(nums[middle:], target, middle+start)
+			right = mid - 1
 		}
 	}
 
-	dfs(tokens, target, 0)
-	return pos
+	return left
 }

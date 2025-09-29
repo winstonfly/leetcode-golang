@@ -3,29 +3,32 @@ package stacks
 // NO.20
 func isValid(s string) bool {
 
-	stack := []byte{}
+	var stack []byte
+
 	for i := 0; i < len(s); i++ {
 		c := s[i]
-		if c == '(' || c == '[' || c == '{' {
+		if c == '(' || c == '{' || c == '[' {
 			stack = append(stack, c)
-		} else {
-			if len(stack) == 0 {
+			continue
+		}
+
+		switch c {
+		case ')':
+			if len(stack) == 0 || stack[len(stack)-1] != '(' {
 				return false
 			}
-
-			top := stack[len(stack)-1]
-			if top == '(' && c == ')' || top == '[' && c == ']' || top == '{' && c == '}' {
-				stack = stack[:len(stack)-1]
-			} else {
+		case ']':
+			if len(stack) == 0 || stack[len(stack)-1] != '[' {
+				return false
+			}
+		case '}':
+			if len(stack) == 0 || stack[len(stack)-1] != '{' {
 				return false
 			}
 		}
 
+		stack = stack[:len(stack)-1]
 	}
 
-	if len(stack) != 0 {
-		return false
-	}
-
-	return true
+	return len(stack) == 0
 }
