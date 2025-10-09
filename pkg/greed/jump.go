@@ -3,17 +3,17 @@ package greed
 // NO.45
 func jump(nums []int) int {
 	lastPos := len(nums) - 1
-	start := lastPos
-	times := 0
-	for lastPos > 0 && start >= 0 {
-		if start+nums[start] >= lastPos {
-			start--
-			continue
+	steps := 0
+
+	for lastPos > 0 {
+		for i := 0; i < lastPos; i++ {
+			if nums[i]+i >= lastPos {
+				lastPos = i
+				steps++
+				break
+			}
 		}
-		//最左侧
-		lastPos = start
-		times++
 	}
 
-	return times
+	return steps
 }

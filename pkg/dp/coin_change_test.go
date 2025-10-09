@@ -10,4 +10,18 @@ func TestCoinChange(t *testing.T) {
 		v := coinChange(coins, amount)
 		t.Log(v)
 	})
+
+	t.Run("test2", func(t *testing.T) {
+		coins := []int{2}
+		amount := 3
+		v := coinChange(coins, amount)
+		t.Log(v)
+	})
+
+	t.Run("test3", func(t *testing.T) {
+		coins := []int{1}
+		amount := 0
+		v := coinChange(coins, amount)
+		t.Log(v)
+	})
 }
