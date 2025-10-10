@@ -40,14 +40,10 @@ func canPartition1(nums []int) bool {
 }
 
 func canPartition(nums []int) bool {
-	//01背包问题，动态规划
-	sum, maxx := 0, 0
-
+	//动态规划解法，将题目转为01背包问题
+	sum := 0
 	for _, v := range nums {
 		sum += v
-		if v > maxx {
-			maxx = v
-		}
 	}
 
 	if sum%2 != 0 {
@@ -55,27 +51,14 @@ func canPartition(nums []int) bool {
 	}
 
 	total := sum / 2
-	if maxx > total {
-		return false
-	}
+	dp := make([]bool, total+1)
+	dp[0] = true
 
-	//定义dp[i][j]表示前i个数据里是否能凑出和为j
-	dp := make([][]bool, len(nums))
-	for i, _ := range dp {
-		dp[i] = make([]bool, total+1)
-		dp[i][0] = true
-	}
-
-	dp[0][nums[0]] = true
-	for i := 1; i < len(nums); i++ {
-		for j := 1; j <= total; j++ {
-			if j-nums[i] > 0 {
-				dp[i][j] = dp[i-1][j] || dp[i-1][j-nums[i]]
-			} else {
-				dp[i][j] = dp[i-1][j]
-			}
+	//倒序枚举，保证不重复使用元素， 如果正序枚举会重复使用元素，成了完全背包问题了
+	for i := 0; i < len(nums); i++ {
+		for j := total; j >= nums[i]; j-- {
+			dp[j] = dp[j] || dp[j-nums[i]]
 		}
 	}
-
-	return dp[len(nums)-1][total]
+	return dp[total]
 }
